@@ -1,0 +1,23 @@
+body {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.navbar {
+  margin-bottom: 20px;
+}
+
+#dateCouranteReservation{
+	width : 50%;
+}
+
+
+.color-fa{
+  color: black;
+}
+
+
+.couleurBoutton{
+  color: blue;
+}
+

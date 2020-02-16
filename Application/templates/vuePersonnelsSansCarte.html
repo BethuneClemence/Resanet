@@ -1,0 +1,59 @@
+{% include "vueEntete.html" %}
+{% include "vueEnteteGestionnaire.html" %}
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-1"></div>
+		<div class ="col-md-10">
+			<h2><center>Personnels sans carte de Restauration</center></h2>
+		
+		</div>
+	
+	</div>
+	
+	<br>
+	<div class = "row">
+		<div class = "col-md-1"></div>
+		<div class = "col-md-10">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						{%for enTete in enTeteDuTableau %}
+						<th>{{enTete.upper()}}</th>
+						{%endfor%}
+					
+					</tr>
+				
+				</thead>
+				
+				<tbody>
+					{%for unPersonnel in listePersonnelsSansCarte %}
+					<tr>
+						<td>{{unPersonnel['matricule']}}</td>
+						<td>{{unPersonnel['nom']}}</td>
+						<td>{{unPersonnel['prenom']}}</td>
+						<td>{{unPersonnel['nomService']}}</td>
+						
+						
+					
+						<td><button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom"  title="Créer un compte"><i class="fas fa-user-plus"></i></button></td>
+					
+					</tr>
+					{%endfor%}
+				</tbody>
+			</table>
+		</div>
+	
+	</div>
+</div>
+
+
+<script>
+	$(document).ready(function(){
+	  $('[data-toggle="tooltip"]').tooltip();   
+	});
+</script>
+
+
+
+{% include "vuePied.html" %}
