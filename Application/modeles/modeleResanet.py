@@ -174,7 +174,7 @@ def getPersonnelsAvecCarte() :
 	try :
 		curseur = getConnexionBD().cursor()
 		requete = '''
-					select Carte.numeroCarte, solde, Personnel.matricule,  nom , prenom , nomService
+					select Carte.numeroCarte, Carte.activee, solde, Personnel.matricule,  nom , prenom , nomService
 					from Service
 					inner join Personnel
 					on Service.idService = Personnel.idService
@@ -190,12 +190,12 @@ def getPersonnelsAvecCarte() :
 		for unEnregistrement in enregistrements :
 			unPersonnel = {}
 			unPersonnel[ 'numeroCarte' ] = unEnregistrement[ 0]
-			unPersonnel[ 'solde' ] = unEnregistrement[ 1 ]
-			#unPersonnel[ 'activee' ] = unEnregistrement[ 2 ]
-			unPersonnel[ 'matricule' ] = unEnregistrement[ 2 ]
-			unPersonnel[ 'nom' ] = unEnregistrement[ 3 ]
-			unPersonnel[ 'prenom' ] = unEnregistrement[ 4 ]
-			unPersonnel[ 'nomService' ] = unEnregistrement[ 5 ]
+			unPersonnel[ 'activee' ] = unEnregistrement[ 1 ]
+			unPersonnel[ 'solde' ] = unEnregistrement[ 2 ]
+			unPersonnel[ 'matricule' ] = unEnregistrement[ 3 ]
+			unPersonnel[ 'nom' ] = unEnregistrement[ 4 ]
+			unPersonnel[ 'prenom' ] = unEnregistrement[ 5 ]
+			unPersonnel[ 'nomService' ] = unEnregistrement[ 6 ]
 			
 			personnels.append( unPersonnel )
 			
@@ -237,7 +237,7 @@ def bloquerCarte( numeroCarte ) :
 			
 		curseur.execute( requete , ( numeroCarte , ) )
 		connexionBD.commit()
-		nbTuplesTraites = curseur.rowcount
+		nbTuplesTraites = curseur.rowcount0
 		curseur.close()
 		
 		return nbTuplesTraites
@@ -522,3 +522,17 @@ def crediterSolde( numeroCarte ) :
 
 	except :
 		return None
+		
+def getConnexionBD() : # Cette fonction permet de se connecter sur la base de donnée resanet
+    global connexionBD
+    try :
+        if connexionBD == None :
+            connexionBD = mysql.connector.connect(
+                    host = 'localhost' ,
+                    user = 'root' ,
+                    password = 'azerty' ,
+                    database = 'resanet'
+                )
+        return connexionBD # Le type de cette variable => curseur
+    except :
+        return None

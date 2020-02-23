@@ -4,6 +4,9 @@
 from flask import *
 from modeles import modeleResanet
 from technique import datesResanet
+import sys
+reload(sys)
+sys.setdefaultencoding("utf-8")
 
 app = Flask( __name__ )
 app.secret_key = 'resanet'
@@ -175,47 +178,60 @@ def seConnecterGestionnaire():
 
 @app.route( '/gestionnaire/listerMembresAvecCarte' , methods = [ 'GET' ] )
 def listeMembresAvecCarte():
-	
 	personnelsAvecCarte = modeleResanet.getPersonnelsAvecCarte()
-	if len(personnelsAvecCarte) > 0:
-	
-		enTeteDuTableauAvecCarte = ['Numero Carte', 'Solde', 'Matricule', 'Nom', 'Prenom', 'Service']
-		#enTeteDuTableau = personnelsAvecCarte[0].keys() #on aurait pu prendre crochet 1 ou 2 (on veut juste recuperer les clefs des dictionnaires)
-		#enTeteDuTableau.sort()
+	enTeteDuTableauAvecCarte = ['Numero Carte', 'Etat Carte', 'Solde', 'Matricule', 'Nom', 'Prenom', 'Service']
 	return render_template('vuePersonnelsAvecCarte.html', listePersonnelsAvecCarte = personnelsAvecCarte, enTeteDuTableau = enTeteDuTableauAvecCarte)
 
 @app.route( '/gestionnaire/listerMembresSansCarte' , methods = [ 'GET' ] )
 def listeMembresSansCarte():
 	personnelsSansCarte = modeleResanet.getPersonnelsSansCarte()
-	enTeteDuTableauPersonnelsSansCarte = ['Matricule','Nom', 'Prénom', 'Service']
+	enTeteDuTableauPersonnelsSansCarte = ['Matricule','Nom', 'Prenom', 'Service'] #attention si on rajoute un accent il faut rajouter 
+	
 	return render_template('vuePersonnelsSansCarte.html', listePersonnelsSansCarte = personnelsSansCarte, enTeteDuTableau = enTeteDuTableauPersonnelsSansCarte )
-	
-@app.route('/ouvrirModalCrediterCarte' , methods = ['POST'])
-def crediterMembresAvecCarte():
-	#cartes = modeleResanet.crediterCarte(numeroCarte , somme )
-	
-	if request.method == "POST":
-		personnelsAvecCarte = modeleResanet.getPersonnelsAvecCarte()
-		numeroCarte = request.form['numeroCarte']
-		enTeteDuTableauAvecCarte = ['Numero Carte', 'Solde', 'Matricule', 'Nom', 'Prenom', 'Service']
-		return render_template('vuePersonnelsAvecCarte.html', listePersonnelsAvecCarte = personnelsAvecCarte, enTeteDuTableau = enTeteDuTableauAvecCarte, numeroCarte = numeroCarte)
-	else :
 
-		return render_template('vuePageErreur.html')
 
+# -------- Crediter ------------
+
+@app.route('/gestionnaire/listerMembresAvecCarte/ListerCrediterCarte/CrediterCarte' , methods = [ 'POST'])
+def membreACrediter():
+	personnel = request.form[ 'personnel' ]
+	session[ 'numeroCarte' ] = personnel
+	enTeteDuTableauAvecCarte = ['Numero Carte', 'Etat Carte', 'Solde', 'Matricule', 'Nom', 'Prenom', 'Service']
+	return redirect('/gestionnaire/listerMembresAvecCarte/ListerCrediterCarte')
+
+@app.route('/gestionnaire/listerMembresAvecCarte/ListerCrediterCarte' , methods = [ 'GET'])
+def membresAvecCarte():
+	numerodeCarte = session[ 'numeroCarte' ]
+	enTeteDuTableauAvecCarte = ['Numero Carte', 'Etat Carte', 'Solde', 'Matricule', 'Nom', 'Prenom', 'Service']
+	return render_template('vueOperationCrediter.html', enTeteDuTableau = enTeteDuTableauAvecCarte, numeroCarte = numerodeCarte )
 	
-@app.route('/ouvrirModalBloquerCarte', methods = ['POST'])
+@app.route('/gestionnaire/listerMembresAvecCarte/ListerCrediterCarte/CrediterCarte/Crediter' , methods = ['POST'])
+def crediterCarte():
+	numeroCarte = session[ 'numeroCarte' ]
+	somme = request.form[ 'somme' ]
+	modeleResanet.crediterCarte( numeroCarte , somme )
+	
+	return redirect('/gestionnaire/listerMembresAvecCarte/ListerCrediterCarte')	
+	
+# -------- Crediter ------------
+	
+@app.route('/gestionnaire/BloquerCarte', methods = ['POST'])
 def bloquerMembresAvecCarte():
 	numeroDeLaCarte = request.form[ 'numeroCarteBloquer' ]
-	personnelsAvecCarte = modeleResanet.getPersonnelsAvecCarte()
-	
-	# for uneCarte in personnelsAvecCarte:
-	# 	if uneCarte['activee'] == 0:
-	# 		uneCarte['activee'] = 1
-	# 		numeroCarte = uneCarte['numeroCarte']
-	enTeteDuTableauAvecCarte = ['Numero Carte', 'Solde', 'Matricule', 'Nom', 'Prenom', 'Service']
-	return render_template('vuePersonnelsAvecCarte.html', listePersonnelsAvecCarte = personnelsAvecCarte, enTeteDuTableau = enTeteDuTableauAvecCarte, numeroDeLaCarte = numeroDeLaCarte)
+	modeleResanet.bloquerCarte( numeroDeLaCarte )
+	return redirect('/gestionnaire/listerMembresAvecCarte')
 
+@app.route('/gestionnaire/ActiverCarte', methods = ['POST'])
+def activerMembresAvecCarte():
+	numeroDeLaCarte = request.form[ 'numeroCarteActiver' ]
+	modeleResanet.activerCarte( numeroDeLaCarte )
+	return redirect('/gestionnaire/listerMembresAvecCarte')
+
+@app.route('/gestionnaire/ReinitMDP', methods = ['POST'])
+def reinitialiserMdp():
+	numeroDeLaCarte = request.form[ 'numeroCarte' ]
+	modeleResanet.reinitialiserMdp( numeroDeLaCarte )
+	return redirect('/gestionnaire/listerMembresAvecCarte')
 	
 if __name__ == '__main__' :
-	app.run( debug = True , host = '192.168.193.1' , port = 5000 )
+	app.run( debug = True , host = '192.168.252.132' , port = 5000 )
