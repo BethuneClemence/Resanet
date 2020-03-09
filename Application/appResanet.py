@@ -4,6 +4,9 @@
 from flask import *
 from modeles import modeleResanet
 from technique import datesResanet
+import sys
+reload(sys)
+sys.setdefaultencoding("utf-8")
 
 app = Flask( __name__ )
 app.secret_key = 'resanet'
@@ -173,49 +176,101 @@ def seConnecterGestionnaire():
 
 		return render_template('vueConnexionGestionnaire.html',saisieIncomplete = True)
 
+# -------- Membres avec carte ------------
+
 @app.route( '/gestionnaire/listerMembresAvecCarte' , methods = [ 'GET' ] )
 def listeMembresAvecCarte():
-	
 	personnelsAvecCarte = modeleResanet.getPersonnelsAvecCarte()
-	if len(personnelsAvecCarte) > 0:
-	
-		enTeteDuTableauAvecCarte = ['Numero Carte', 'Solde', 'Matricule', 'Nom', 'Prenom', 'Service']
-		#enTeteDuTableau = personnelsAvecCarte[0].keys() #on aurait pu prendre crochet 1 ou 2 (on veut juste recuperer les clefs des dictionnaires)
-		#enTeteDuTableau.sort()
+	enTeteDuTableauAvecCarte = ['Numero Carte', 'Etat Carte', 'Solde', 'Matricule', 'Nom', 'Prenom', 'Service']
 	return render_template('vuePersonnelsAvecCarte.html', listePersonnelsAvecCarte = personnelsAvecCarte, enTeteDuTableau = enTeteDuTableauAvecCarte)
+
+# -------- Membres sans carte ------------
 
 @app.route( '/gestionnaire/listerMembresSansCarte' , methods = [ 'GET' ] )
 def listeMembresSansCarte():
 	personnelsSansCarte = modeleResanet.getPersonnelsSansCarte()
-	enTeteDuTableauPersonnelsSansCarte = ['Matricule','Nom', 'Prénom', 'Service']
+	enTeteDuTableauPersonnelsSansCarte = ['Matricule','Nom', 'Prenom', 'Service'] #attention si on rajoute un accent il faut rajouter 
+	
 	return render_template('vuePersonnelsSansCarte.html', listePersonnelsSansCarte = personnelsSansCarte, enTeteDuTableau = enTeteDuTableauPersonnelsSansCarte )
-	
-@app.route('/ouvrirModalCrediterCarte' , methods = ['POST'])
-def crediterMembresAvecCarte():
-	#cartes = modeleResanet.crediterCarte(numeroCarte , somme )
-	
-	if request.method == "POST":
-		personnelsAvecCarte = modeleResanet.getPersonnelsAvecCarte()
-		numeroCarte = request.form['numeroCarte']
-		enTeteDuTableauAvecCarte = ['Numero Carte', 'Solde', 'Matricule', 'Nom', 'Prenom', 'Service']
-		return render_template('vuePersonnelsAvecCarte.html', listePersonnelsAvecCarte = personnelsAvecCarte, enTeteDuTableau = enTeteDuTableauAvecCarte, numeroCarte = numeroCarte)
-	else :
 
-		return render_template('vuePageErreur.html')
 
+# -------- Crediter ------------
+
+@app.route('/gestionnaire/listerMembresAvecCarte/listerCrediterCarte/crediterCarte' , methods = [ 'POST'])
+def membreACrediter():
+	numCartePersonnel = request.form[ 'numCartePersonnel' ]
+	session['numeroCarte'] = numCartePersonnel
+	enTeteDuTableauAvecCarte = ['Numero Carte', 'Etat Carte', 'Solde', 'Matricule', 'Nom', 'Prenom', 'Service']
+	return redirect('/gestionnaire/listerMembresAvecCarte/listerCrediterCarte')
+
+@app.route('/gestionnaire/listerMembresAvecCarte/listerCrediterCarte' , methods = [ 'GET'])
+def membresAvecCarte():
+	enTeteDuTableauAvecCarte = ['Numero Carte', 'Etat Carte', 'Solde', 'Matricule', 'Nom', 'Prenom', 'Service']
+	numerodeCarte = session[ 'numeroCarte' ]
+	nomMembre = [ 4 ]
+	return render_template('vueOperationCrediter.html', enTeteDuTableau = enTeteDuTableauAvecCarte, numeroCarte = numerodeCarte, nomMembre = nomMembre )
 	
-@app.route('/ouvrirModalBloquerCarte', methods = ['POST'])
-def bloquerMembresAvecCarte():
+@app.route('/gestionnaire/listerMembresAvecCarte/listerCrediterCarte/crediterCarte/crediter' , methods = ['POST'])
+def crediterCarte():
+	numeroCarte = session[ 'numeroCarte' ]
+	somme = request.form[ 'somme' ]
+	modeleResanet.crediterCarte( numeroCarte , somme )
+	
+	return redirect('/gestionnaire/listerMembresAvecCarte/listerCrediterCarte')	
+	
+# -------- Bloquer et Activer une carte ------------
+	
+@app.route('/gestionnaire/listerMembresAvecCarte/bloquerCarte', methods = ['POST'])
+def bloquerCarteMembre():
 	numeroDeLaCarte = request.form[ 'numeroCarteBloquer' ]
-	personnelsAvecCarte = modeleResanet.getPersonnelsAvecCarte()
-	
-	# for uneCarte in personnelsAvecCarte:
-	# 	if uneCarte['activee'] == 0:
-	# 		uneCarte['activee'] = 1
-	# 		numeroCarte = uneCarte['numeroCarte']
-	enTeteDuTableauAvecCarte = ['Numero Carte', 'Solde', 'Matricule', 'Nom', 'Prenom', 'Service']
-	return render_template('vuePersonnelsAvecCarte.html', listePersonnelsAvecCarte = personnelsAvecCarte, enTeteDuTableau = enTeteDuTableauAvecCarte, numeroDeLaCarte = numeroDeLaCarte)
+	modeleResanet.bloquerCarte( numeroDeLaCarte )
+	return redirect('/gestionnaire/listerMembresAvecCarte')
 
+@app.route('/gestionnaire/listerMembresAvecCarte/activerCarte', methods = ['POST'])
+def activerCarteMembre():
+	numeroDeLaCarte = request.form[ 'numeroCarteActiver' ]
+	modeleResanet.activerCarte( numeroDeLaCarte )
+	return redirect('/gestionnaire/listerMembresAvecCarte')
+
+# -------- Renitialiser mdp ------------
+
+@app.route('/gestionnaire/listerMembresAvecCarte/reinitMDP', methods = ['POST'])
+def reinitialiserMdpMembre():
+	numeroDeLaCarte = request.form[ 'numeroCarte' ]
+	modeleResanet.reinitialiserMdp( numeroDeLaCarte )
+	return redirect('/gestionnaire/listerMembresAvecCarte')
 	
+# -------- Historique ------------
+
+@app.route('/gestionnaire/listerMembresAvecCarte/historique', methods = ['POST'])
+def historiqueMembre():
+	numeroDeLaCarte = request.form[ 'numeroCarte' ]
+	historique = modeleResanet.getHistoriqueReservationsCarte( numeroDeLaCarte )
+	historique.reverse()
+	nbAnnees = []
+	nbMois = []
+	nbJours = []
+	for uneReserv in historique :
+		( annee , mois , jour ) = uneReserv.split( '-' )
+		nbAnnees.append(annee)
+		nbMois.append(mois)
+		nbJours.append(jour)
+	longueurListe = len(nbJours)
+	return render_template('vueHistoriqueCarte.html', numeroCarte = numeroDeLaCarte, Annees = nbAnnees , Mois = nbMois ,Jours = nbJours , longList = longueurListe)
+
+# -------- Creer carte ------------
+
+@app.route('/gestionnaire/listerMembresSansCarte/creationCompte', methods = ['POST'])
+def creationCompteRestauration():
+	matriculeDuCompte = request.form[ 'matricule' ]
+	return render_template('vueCreationCompteRestauration.html', matricule = matriculeDuCompte)
+
+@app.route('/gestionnaire/listerMembresSansCarte/creationCompte/creer', methods = ['POST'])
+def creerCompte():
+	matriculeDuCompte = request.form['matricule']
+	etatDeLaCarte = request.form['etatCarte']
+	modeleResanet.creerCarte( matriculeDuCompte , etatDeLaCarte)
+	return render_template('vueCreationCompteRestauration.html')
+
 if __name__ == '__main__' :
-	app.run( debug = True , host = '192.168.193.1' , port = 5000 )
+	app.run( debug = True , host = '127.0.0.1' , port = 5000 )

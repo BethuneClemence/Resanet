@@ -1,0 +1,21 @@
+{% include "vueEntete.html" %}
+{% include "vueEnteteGestionnaire.html" %}
+
+<div id="form-crediter">
+	<form action="/gestionnaire/listerMembresSansCarte/creationCompte/creer" method="POST">
+		<h1><center><b>Création du compte</b> </center></h1>
+		
+			<label for="carte">Matricule</label>
+			<input type="number" class="form-control" name="matricule" value={{matricule}} /><br />
+			
+			<p>
+				<label for="valeurActiver">Souhaitez vous activer la carte ?</label><br />
+				<input type="radio" class="form control"  name="etatCarte" required value=Trueid="True"/> <label for="True">Oui</label><br />
+				<input type="radio" class="form control"  name="etatCarte" value=False id="False"/> <label for="False">Non</label>
+			</p>
+		
+		<button type="submit" id="boutonCreer" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Creer">Créer</button>
+	</form>
+</div>
+
+{% include "vuePied.html" %}

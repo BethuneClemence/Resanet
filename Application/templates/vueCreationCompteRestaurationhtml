@@ -1,0 +1,26 @@
+{% include "vueEntete.html" %}
+{% include "vueEnteteGestionnaire.html" %}
+
+
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-1"></div>
+		<div class ="col-md-10">
+			<h2><center>Historique de réservation</center></h2>
+		
+		</div>
+	
+	</div>
+	
+	<br>
+	<div class = "row">
+		<div class = "col-md-1"></div>
+		<div class = "col-md-10">
+
+		</div>
+	
+	</div>
+</div>
+
+{% include "vuePied.html" %}

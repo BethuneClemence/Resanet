@@ -36,7 +36,12 @@
 						
 						
 					
-						<td><button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom"  title="Créer un compte"><i class="fas fa-user-plus"></i></button></td>
+						<td>
+							<form action="/gestionnaire/listerMembresSansCarte/creationCompte" method="POST">
+								<input type="hidden" name="matricule" value={{unPersonnel['matricule']}}>
+								<button type="submit" id="boutonCreationCompte" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom"  title="Créer un compte"><i class="fas fa-user-plus"></i></button>
+							</form>
+						</td>
 					
 					</tr>
 					{%endfor%}

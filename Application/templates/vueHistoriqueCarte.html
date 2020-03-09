@@ -1,0 +1,47 @@
+{% include "vueEntete.html" %}
+{% include "vueEnteteGestionnaire.html" %}
+
+
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-1"></div>
+		<div class ="col-md-10">
+			<h2><center>Historique de réservation</center></h2>
+		
+		</div>
+	
+	</div>
+	
+	<br>
+	<div class = "row">
+		<div class = "col-md-1"></div>
+		<div class = "col-md-10">
+
+			<table class="table table-hover" >
+				<thead>
+					<tr>
+						<th> Jours </th>
+					</tr>
+				
+				</thead>
+				
+				<tbody>
+					{%for i in range (longList) %}
+						<tr>				
+							<td>{{Jours[i]}}</td>
+	
+							<td>{{Mois[i]}}</td>
+
+							<td>{{Annees[i]}}</td>
+						</tr>
+					{%endfor%}
+					
+				</tbody> 
+			</table>
+		</div>
+	
+	</div>
+</div>
+
+{% include "vuePied.html" %}
