@@ -193,7 +193,6 @@ def listeMembresSansCarte():
 	
 	return render_template('vuePersonnelsSansCarte.html', listePersonnelsSansCarte = personnelsSansCarte, enTeteDuTableau = enTeteDuTableauPersonnelsSansCarte )
 
-
 # -------- Crediter ------------
 
 @app.route('/gestionnaire/listerMembresAvecCarte/listerCrediterCarte/crediterCarte' , methods = [ 'POST'])
@@ -258,7 +257,7 @@ def historiqueMembre():
 	longueurListe = len(nbJours)
 	return render_template('vueHistoriqueCarte.html', numeroCarte = numeroDeLaCarte, Annees = nbAnnees , Mois = nbMois ,Jours = nbJours , longList = longueurListe)
 
-# -------- Creer carte ------------
+# -------- Creer compte ------------
 
 @app.route('/gestionnaire/listerMembresSansCarte/creationCompte', methods = ['POST'])
 def creationCompteRestauration():
@@ -267,7 +266,7 @@ def creationCompteRestauration():
 
 @app.route('/gestionnaire/listerMembresSansCarte/creationCompte/creer', methods = ['POST'])
 def creerCompte():
-	matriculeDuCompte = request.form['matricule']
+	matriculeDuCompte = session[ 'matricule' ]
 	etatDeLaCarte = request.form['etatCarte']
 	modeleResanet.creerCarte( matriculeDuCompte , etatDeLaCarte)
 	return render_template('vueCreationCompteRestauration.html')

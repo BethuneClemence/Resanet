@@ -20,4 +20,55 @@ body {
 .couleurBoutton{
   color: blue;
 }
+.navbar-brand colorResanet{
+color: black;
+}
+#boutonCreationCompte{
+background-color: #11bf1b;
+}
+#boutonCreationCompte:hover{
+background-color: #27bf68;
+border: 1px solid #27bf68;
+}
+#boutonBloquerCarte{
+background-color: #f92222;
+}
+#boutonBloquerCarte:hover{
+background-color: #f74040;
+border: 1px solid #f74040;
+}
 
+#boutonCrediterCarte{
+background-color: #11bf1b;
+}
+#boutonCrediterCarte:hover{
+background-color: #27bf68;
+border: 1px solid #27bf68;
+}
+
+#boutonReinitialiserMDP{
+background-color: #ff9e12;
+}
+#boutonReinitialiserMDP:hover{
+background-color: #f9ab3c;
+border: 1px solid #f9ab3c;
+}
+
+#boutonHistorique{
+background-color: #066df9;
+}
+#boutonHistorique:hover{
+background-color: #2c82f8;
+border: 1px solid #2c82f8;
+}
+
+
+
+
+#boutonActiverCarte{
+background-color: #21aef9;
+}
+#boutonActiverCarte:hover{
+background-color: #62c1f7;
+border: 1px solid #62c1f7;
+}

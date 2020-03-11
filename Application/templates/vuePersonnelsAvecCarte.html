@@ -52,11 +52,14 @@
 						
 						
 						<td>
+							{% if unPersonnel['activee'] == 1 %}
 							<form action="/gestionnaire/listerMembresAvecCarte/listerCrediterCarte/crediterCarte" method="POST">
 								<input type="hidden" name="numCartePersonnel" value={{unPersonnel['numeroCarte']}}>
 								<button type="submit" id="boutonCrediterCarte" class="btn btn-success" data-toggle="tooltip"  data-placement="bottom" title="Créditer"><i class="fas fa-euro-sign"></i></button>
 							</form>
+							{% endif %}
 						</td>
+						
 						
 						{% if unPersonnel['activee'] == 1 %}
 							<td>
@@ -78,10 +81,12 @@
 						{% endif %}
 						
 						<td>
+							{% if unPersonnel['activee'] == 1 %}
 							<form action="/gestionnaire/listerMembresAvecCarte/reinitMDP" method="POST">
 								<input type="hidden" name="numeroCarte" value={{unPersonnel['numeroCarte']}}>
 								<button type="submit" id="boutonReinitialiserMDP" class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" title="Rénitialiser mdp"><i class="fas fa-lock"></i></button>
 							</form>
+							{% endif %}
 						</td>
 						
 						<td>
