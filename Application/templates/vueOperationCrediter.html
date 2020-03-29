@@ -5,6 +5,7 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-1"></div>
+<<<<<<< HEAD
 		<div class ="col-md-10"></div>
 	</div>
 </div> 
@@ -25,4 +26,55 @@
 	</form>
 </div>
 		
+=======
+		<div class ="col-md-10">
+			<h1><center>Carte de</center></h1>
+		
+		</div>
+	
+	</div>
+	
+	<br>
+	<div class = "row">
+		<div class = "col-md-1"></div>
+		<div class = "col-md-10">
+
+			<table class="table table-hover" >
+				
+				<thead>
+					<tr>
+						{%for enTete in enTeteDuTableau %}
+							<th>{{enTete.upper()}}</th>
+						{%endfor%}
+					</tr>
+				</thead>
+				
+				<tbody>
+					<tr>
+						
+						<td>
+							
+						</td>		
+					</tr>
+				</tbody> 
+				
+			</table>
+		</div>
+	
+	</div>
+</div> 
+						<form action="/gestionnaire/listerMembresAvecCarte/ListerCrediterCarte/CrediterCarte/Crediter" method="POST">
+							<h2><center><b>Carte numéro</b> </center></h2>
+							  <label for="carte">Carte à crediter</label>
+							  <input type="email" class="form-control" name="numeroCarte" disabled value={{numeroCarte}}>
+			
+							<div class="form-group">
+								<label for="somme">Somme</label>
+								<input type="number" class="form-control" name="somme" placeholder="Montant en €">
+							</div>
+							<button type="submit" id="boutonActiver" class="btn btn-primary" data-toggle="tooltip" title="Valider">Valider</button>
+						</form>
+			
+
+>>>>>>> 672222f9c27b602f9887d4856f21c954f9c291ee
 {% include "vuePied.html" %}

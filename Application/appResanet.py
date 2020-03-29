@@ -217,10 +217,10 @@ def crediterCarte():
 	
 	return redirect('/gestionnaire/listerMembresAvecCarte/listerCrediterCarte')	
 	
-# -------- Bloquer et Activer une carte ------------
+# -------- Activer et Bloquer ------------
 	
-@app.route('/gestionnaire/listerMembresAvecCarte/bloquerCarte', methods = ['POST'])
-def bloquerCarteMembre():
+@app.route('/gestionnaire/BloquerCarte', methods = ['POST'])
+def bloquerMembresAvecCarte():
 	numeroDeLaCarte = request.form[ 'numeroCarteBloquer' ]
 	modeleResanet.bloquerCarte( numeroDeLaCarte )
 	return redirect('/gestionnaire/listerMembresAvecCarte')
@@ -233,8 +233,14 @@ def activerCarteMembre():
 
 # -------- Renitialiser mdp ------------
 
-@app.route('/gestionnaire/listerMembresAvecCarte/reinitMDP', methods = ['POST'])
-def reinitialiserMdpMembre():
+@app.route('/gestionnaire/ActiverCarte', methods = ['POST'])
+def activerMembresAvecCarte():
+	numeroDeLaCarte = request.form[ 'numeroCarteActiver' ]
+	modeleResanet.activerCarte( numeroDeLaCarte )
+	return redirect('/gestionnaire/listerMembresAvecCarte')
+
+@app.route('/gestionnaire/ReinitMDP', methods = ['POST'])
+def reinitialiserMdp():
 	numeroDeLaCarte = request.form[ 'numeroCarte' ]
 	modeleResanet.reinitialiserMdp( numeroDeLaCarte )
 	return redirect('/gestionnaire/listerMembresAvecCarte')
@@ -272,4 +278,5 @@ def creerCompte():
 	return render_template('vueCreationCompteRestauration.html')
 
 if __name__ == '__main__' :
+
 	app.run( debug = True , host = '127.0.0.1' , port = 5000 )

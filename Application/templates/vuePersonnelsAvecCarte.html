@@ -49,7 +49,10 @@
 						<td>{{unPersonnel['nom']}}</td>
 						<td>{{unPersonnel['prenom']}}</td>
 						<td>{{unPersonnel['nomService']}}</td>
+<<<<<<< HEAD
 						
+=======
+>>>>>>> 672222f9c27b602f9887d4856f21c954f9c291ee
 						
 						<td>
 							{% if unPersonnel['activee'] == 1 %}
@@ -81,20 +84,56 @@
 						{% endif %}
 						
 						<td>
+<<<<<<< HEAD
 							{% if unPersonnel['activee'] == 1 %}
 							<form action="/gestionnaire/listerMembresAvecCarte/reinitMDP" method="POST">
 								<input type="hidden" name="numeroCarte" value={{unPersonnel['numeroCarte']}}>
 								<button type="submit" id="boutonReinitialiserMDP" class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" title="Rénitialiser mdp"><i class="fas fa-lock"></i></button>
+=======
+							<form action="/gestionnaire/listerMembresAvecCarte/ListerCrediterCarte/CrediterCarte" method="POST">
+								<input type="hidden" name="personnel" value={{unPersonnel['numeroCarte']}}>
+								<button type="submit" id="boutonCrediterCarte" class="btn btn-success" data-toggle="tooltip"  data-placement="bottom" title="Créditer"><i class="fas fa-euro-sign"></i></button>
+>>>>>>> 672222f9c27b602f9887d4856f21c954f9c291ee
 							</form>
 							{% endif %}
 						</td>
 						
+<<<<<<< HEAD
 						<td>
 							<form action="/gestionnaire/listerMembresAvecCarte/historique" method="POST">
 								<input type="hidden" name="numeroCarte" value={{unPersonnel['numeroCarte']}}>
 								<button type="submit" id="boutonHistorique" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Historique"><i class="fas fa-history"></i></button>
 							</form>
 						</td>
+=======
+						{% if unPersonnel['activee'] == 1 %}
+							<td>
+								<form action="/gestionnaire/BloquerCarte" method="POST">
+									<input type="hidden" name="numeroCarteBloquer" value={{unPersonnel['numeroCarte']}}>
+									<button type="submit" id="boutonBloquerCarte" class="btn btn-danger" data-toggle="tooltip"  data-placement="bottom" title="Bloquer"><i class="fas fa-ban"></i></button>
+								</form>
+							</td>
+						{% endif %}
+						
+						
+						{% if unPersonnel['activee'] == 0 %}
+							<td>
+								<form action="/gestionnaire/ActiverCarte" method="POST">
+									<input type="hidden" name="numeroCarteActiver" value={{unPersonnel['numeroCarte']}}>
+									<button type="submit" id="boutonActiverCarte" class="btn btn-info" data-toggle="tooltip"  data-placement="bottom" title="Activer"><i class="fas fa-check"></i></button>
+								</form>
+							</td>
+						{% endif %}
+						
+						<td>
+							<form action="/gestionnaire/ReinitMDP" method="POST">
+								<input type="hidden" name="numeroCarte" value={{unPersonnel['numeroCarte']}}>
+								<button type="submit" id="boutonReinitialiserMDP" class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" title="Rénitialiser mdp"><i class="fas fa-lock"></i></button>
+							</form>
+						</td>
+						
+						<td><button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Historique"><i class="fas fa-history"></i></button></td>
+>>>>>>> 672222f9c27b602f9887d4856f21c954f9c291ee
 					
 					</tr>
 					{%endfor%}
@@ -104,6 +143,91 @@
 	
 	</div>
 </div> 
+<<<<<<< HEAD
 
 
+=======
+
+
+<!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Open modal for @mdo</button> 
+<div class="row">
+	<div class="col-md-4"></div>
+	<div class="col-md-2">
+	
+ 
+		<button id="boutonBloquerCarte" type="button" style="display: none; " class="btn btn-primary btn-lg" data-toggle="modal" data-target="#exampleModal"></button>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="false">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel"><center><b>Bloquer une carte</b</center></h4>
+      </div>
+      <div class="modal-body">
+		  <div class="row">
+		<div class="col-md-3"></div>
+		<div class="col-md-6">
+        	<form>
+         		 <div class="form-group">
+           
+			
+					<label for="exampleInputEmail1"> Etes vous sur de bloquer la carte : </label>
+					<input type="email" class="form-control" id="exampleInputEmail1" disabled value="{{numeroDeLaCarte}}">
+				
+			
+         		 </div>
+         
+			</form>
+		</div>
+	  </div>
+	</div>
+	  
+	  <br>
+      <div class="modal-footer">
+        
+        <button type="button" class="btn btn-primary">Valider</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+-->
+
+
+
+<!--
+{% if numeroCarte %}
+
+
+<script>
+	$(document).ready(function(){
+		$("#boutonCarteCrediter").click();
+	});	
+
+</script>
+{% endif %}	
+
+
+{% if numeroDeLaCarte %}
+
+<script>
+	$(document).ready(function(){
+		$("#boutonBloquerCarte").click();
+	});	
+
+</script>
+{% endif %}
+
+
+<script>
+	$(document).ready(function(){
+	  $('[data-toggle="tooltip"]').tooltip();   
+	});
+</script>
+-->
+
+
+
+>>>>>>> 672222f9c27b602f9887d4856f21c954f9c291ee
 {% include "vuePied.html" %}
